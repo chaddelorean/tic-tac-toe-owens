@@ -37,9 +37,10 @@ module.exports = {
         options: vueLoaderConfig
       },
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
+        options: { plugins: ['transform-class-properties']}
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
