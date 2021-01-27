@@ -68,6 +68,9 @@ export default class TTTController {
         return this._grid[coordinate.x] && this._grid[coordinate.x][coordinate.y] !== FREE_CELL ? false : true;
     }
 
+    /**
+     * Used to init grid with default values
+     */
     _initGrid() {
         this._grid = [];
         for (let i = 0; i < COL_SIZE; i++) {
@@ -118,9 +121,14 @@ export default class TTTController {
      * @returns Boolean
      */
     _checkIfPlayerWon() {
-        let playerWon = false;
+        return this._checkRows() || this._checkColumns() || this._checkDiagonals();
+    }
 
-        //Check Rows
+    /**
+     * Checks if player won by rows
+     */
+    _checkRows() {
+        let playerWon = false;
         for (let i = 0; i < this._grid.length; i++) {
             let count = 0;
             for (let j = 0; j < this._grid[i].length; j++) {
@@ -134,37 +142,47 @@ export default class TTTController {
             }
         }
 
-        //Check Columns
-        if (!playerWon) {
-            for (let i = 0; i < this._grid.length; i++) {
-                let count = 0;
-                for (let j = 0; j < this._grid[i].length; j++) {
-                    if (this._grid[j][i] === this.getCurrentPlayer()) {
-                        count++;    
-                    }
-                }
-                if (count === 3) {
-                    playerWon = true;
-                    break;
-                }
-            }
-        }
+        return playerWon;
+    }
 
-        //Check Diagonal 
-        if (!playerWon) {
+    /**
+     * Checks if player won by columns
+     */
+    _checkColumns() {
+        let playerWon = false;
+        for (let i = 0; i < this._grid.length; i++) {
             let count = 0;
-            if (this._grid[1][1] === this.getCurrentPlayer()) {
-                count++;
-            }
-            if (this._grid[0][0] === this.getCurrentPlayer() || this._grid[0][2] === this.getCurrentPlayer()) {
-                count++;
-            }
-            if (this._grid[2][0] === this.getCurrentPlayer() || this._grid[2][2] === this.getCurrentPlayer()) {
-                count++;
+            for (let j = 0; j < this._grid[i].length; j++) {
+                if (this._grid[j][i] === this.getCurrentPlayer()) {
+                    count++;    
+                }
             }
             if (count === 3) {
                 playerWon = true;
+                break;
             }
+        }
+
+        return playerWon;
+    }
+
+    /**
+     * Checks if player won by diagonals
+     */
+    _checkDiagonals() {
+        let playerWon = false;
+        let count = 0;
+        if (this._grid[1][1] === this.getCurrentPlayer()) {
+            count++;
+        }
+        if (this._grid[0][0] === this.getCurrentPlayer() || this._grid[0][2] === this.getCurrentPlayer()) {
+            count++;
+        }
+        if (this._grid[2][0] === this.getCurrentPlayer() || this._grid[2][2] === this.getCurrentPlayer()) {
+            count++;
+        }
+        if (count === 3) {
+            playerWon = true;
         }
 
         return playerWon;
