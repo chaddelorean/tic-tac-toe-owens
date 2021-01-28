@@ -202,18 +202,12 @@ export default class TTTController {
         if (this._grid[1][1] === this.getCurrentPlayer()) {
             count++;
         }
-        if (this._grid[0][0] === this.getCurrentPlayer()) {
-            this._wonCoord = GameConstants.LEFT_DIAGONAL;
+        if (this._grid[0][0] === this.getCurrentPlayer() || this._grid[0][2] === this.getCurrentPlayer()) {
+            this._wonCoord = this._grid[0][0] === this.getCurrentPlayer() ? GameConstants.LEFT_DIAGONAL : GameConstants.RIGHT_DIAGONAL;
             count++;
         }
-        if (this._grid[0][2] === this.getCurrentPlayer()) {
-            this._wonCoord= GameConstants.RIGHT_DIAGONAL;
-            count++;
-        }
-        if (this._grid[2][0] === this.getCurrentPlayer()) {
-            count++;
-        }
-        if (this._grid[2][2] === this.getCurrentPlayer()) {
+        if (this._grid[2][0] === this.getCurrentPlayer() || this._grid[2][2] === this.getCurrentPlayer()) {
+            this._wonCoord = this._wonCoord === GameConstants.LEFT_DIAGONAL && this._grid[2][2] === this.getCurrentPlayer() ? GameConstants.LEFT_DIAGONAL : GameConstants.RIGHT_DIAGONAL;
             count++;
         }
         if (count === 3) {
