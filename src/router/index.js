@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import TicTacToe from '@/components/TicTacToe'
+import TicTacToe from '@/components/game/TicTacToe'
 
 Vue.use(Router)
 

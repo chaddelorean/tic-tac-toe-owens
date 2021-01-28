@@ -1,12 +1,12 @@
 <template>
     <div class="cellContainer">
-        <span v-if="x">X</span>
-        <span v-if="o">O</span>
+        <div v-bind:class="{ show: x }">X</div>
+        <div v-bind:class="{ show: o }">O</div>
     </div>
 </template>
 
 <script>
-import GameConstants from '../models/GameConstants';
+import GameConstants from '../../models/GameConstants';
 export default {
     name: 'TicTacCell',
     props: {
@@ -49,17 +49,36 @@ export default {
 
 <style scoped>
     .cellContainer {
+        position: relative;
         display: flex;
         justify-content: center;
         align-content: center;
         height: 100%;
         width: 100%;
         content: ' ';
+        color: white;
     }
 
-    .cellContainer span {
+    .cellContainer div {
+        position: absolute;
+        top: 0;
+        bottom: 0;
         display: flex;
         align-items: center;
-        font-size: 50px;
+        font-size: 150px;
+        margin-right: 25px;
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .cellContainer .show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .cellContainer div {
+            font-size: 75px;
+        }
     }
 </style>

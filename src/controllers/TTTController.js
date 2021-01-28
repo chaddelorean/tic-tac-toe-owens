@@ -8,6 +8,8 @@ export default class TTTController {
     _grid;
     _currentPlayer
     _numMoves
+    _wonCoord
+    _hasWon
 
     constructor() {
         this._initGrid();
@@ -23,6 +25,9 @@ export default class TTTController {
      * @returns Boolean
      */
     takeTurn(coordinate) {
+        if (this.hasPlayerWon()) {
+            return true;
+        }
         if (this.isCoordinateAvailable(coordinate)) {
             this._setCoordinates(coordinate);
             if (this._checkIfPlayerWon()) {
@@ -66,6 +71,22 @@ export default class TTTController {
      */
     isCoordinateAvailable(coordinate) {
         return this._grid[coordinate.x] && this._grid[coordinate.x][coordinate.y] !== FREE_CELL ? false : true;
+    }
+
+    /**
+     * Returns the coordinates the player won with
+     * @returns String
+     */
+    getWonCoordinates() {
+        return this._wonCoord;
+    }
+
+    /**
+     * Returns boolean if player has already won
+     * @returns Boolean
+     */
+    hasPlayerWon() {
+        return this._hasWon;
     }
 
     /**
@@ -121,7 +142,8 @@ export default class TTTController {
      * @returns Boolean
      */
     _checkIfPlayerWon() {
-        return this._checkRows() || this._checkColumns() || this._checkDiagonals();
+        this._hasWon = this._checkRows() || this._checkColumns() || this._checkDiagonals();
+        return this._hasWon;
     }
 
     /**
@@ -131,8 +153,10 @@ export default class TTTController {
         let playerWon = false;
         for (let i = 0; i < this._grid.length; i++) {
             let count = 0;
+            this._wonCoord = "";
             for (let j = 0; j < this._grid[i].length; j++) {
                 if (this._grid[i][j] === this.getCurrentPlayer()) {
+                    this._wonCoord = GameConstants.ROW + i;
                     count++;    
                 }
             }
@@ -152,8 +176,10 @@ export default class TTTController {
         let playerWon = false;
         for (let i = 0; i < this._grid.length; i++) {
             let count = 0;
+            this._wonCoord = "";
             for (let j = 0; j < this._grid[i].length; j++) {
                 if (this._grid[j][i] === this.getCurrentPlayer()) {
+                    this._wonCoord = GameConstants.COL + i;
                     count++;    
                 }
             }
@@ -172,13 +198,22 @@ export default class TTTController {
     _checkDiagonals() {
         let playerWon = false;
         let count = 0;
+        this._wonCoord = "";
         if (this._grid[1][1] === this.getCurrentPlayer()) {
             count++;
         }
-        if (this._grid[0][0] === this.getCurrentPlayer() || this._grid[0][2] === this.getCurrentPlayer()) {
+        if (this._grid[0][0] === this.getCurrentPlayer()) {
+            this._wonCoord = GameConstants.LEFT_DIAGONAL;
             count++;
         }
-        if (this._grid[2][0] === this.getCurrentPlayer() || this._grid[2][2] === this.getCurrentPlayer()) {
+        if (this._grid[0][2] === this.getCurrentPlayer()) {
+            this._wonCoord= GameConstants.RIGHT_DIAGONAL;
+            count++;
+        }
+        if (this._grid[2][0] === this.getCurrentPlayer()) {
+            count++;
+        }
+        if (this._grid[2][2] === this.getCurrentPlayer()) {
             count++;
         }
         if (count === 3) {
