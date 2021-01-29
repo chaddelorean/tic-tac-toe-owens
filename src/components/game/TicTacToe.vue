@@ -36,6 +36,10 @@ import TTTController from '../../controllers/TTTController'
 import GameConstants from '../../models/GameConstants'
 import tttbutton from '../atoms/TTTButton';
 
+const PLAYER_KEY = "{player}"
+const PLAYER_TURN = `Player ${PLAYER_KEY}'s Turn`;
+const PLAYER_WINS = `Player ${PLAYER_KEY} Wins`;
+const TIE_GAME = "Tie Game"
 export default {
     components: { 
         TicTacCell,
@@ -76,9 +80,11 @@ export default {
                     const turnResult = this.tttController.takeTurn(coordinates);
                     if (turnResult) {
                         this.calculateWin();
-                        this.gameStatus = "Player " + currentPlayer + " Wins";
+                        this.gameStatus = PLAYER_WINS.replace(PLAYER_KEY, currentPlayer);
                     } else if (this.tttController.getNumberOfMoves() >= 9) {
-                        this.gameStatus = "Tie Game";
+                        this.gameStatus = TIE_GAME;
+                    } else {
+                        this.gameStatus = PLAYER_TURN.replace(PLAYER_KEY, this.tttController.getCurrentPlayer());
                     }
                 }
             }
@@ -161,11 +167,12 @@ export default {
             this.col2 = false;
             this.leftDiagonal = false;
             this.rightDiagonal = false;
-            this.gameStatus = "";
+            this.gameStatus = PLAYER_TURN.replace(PLAYER_KEY, this.tttController.getCurrentPlayer());;
         }
     },
     created: function() {
-         this.tttController = new TTTController();
+        this.tttController = new TTTController();
+        this.gameStatus = PLAYER_TURN.replace(PLAYER_KEY, this.tttController.getCurrentPlayer());;
     }
 }
 </script>
@@ -183,8 +190,8 @@ export default {
         position: relative;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        height: 800px;
-        width: 800px;
+        height: 600px;
+        width: 600px;
     }
 
     .grid-container .row-border {
@@ -242,14 +249,14 @@ export default {
     }
 
     .grid-container .left-diagonal {
-        top: 50%;
+        top: 45%;
         left: -121PX;
         width: 129%;
         -webkit-transform: translateY(0px) translateX(0px) rotate(45deg);
     }
 
     .grid-container .right-diagonal {
-        top: 52%;
+        top: 48%;
         right: -121PX;
         width: 129%;
         -webkit-transform: translateY(0px) translateX(0px) rotate(134deg);
@@ -338,13 +345,13 @@ export default {
         }
 
         .grid-container .left-diagonal {
-            left: -50PX;
+            left: -69PX;
             width: 127%;
             -webkit-transform: translateY(0px) translateX(0px) rotate(47deg);
         }
 
         .grid-container .right-diagonal {
-            right: -62PX;
+            right: -68PX;
             width: 127%;
             -webkit-transform: translateY(0px) translateX(0px) rotate(132deg);
         }

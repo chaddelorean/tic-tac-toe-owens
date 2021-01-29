@@ -29,16 +29,16 @@ export default {
     #header-container {
         position: relative;
         width: 100%;
-        height: 150px;
+        height: 100px;
         display: flex;
         justify-content: center;
         align-items: center;
         background-color: #80ed99;
-        margin-bottom: 175px;
+        margin-bottom: 100px;
     }
 
     #header-container span {
-        font-size: 100px;
+        font-size: 75px;
     }
 
     #bottom-bar {

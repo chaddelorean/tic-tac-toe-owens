@@ -3,6 +3,8 @@ import GameConstants from '../models/GameConstants';
 const COL_SIZE = 3;
 const ROW_SIZE = 3;
 const FREE_CELL = "U";
+const MIN_NUM_MOVES = 5;
+const NUM_TO_WIN = 3;
 
 export default class TTTController {
     _grid;
@@ -30,11 +32,11 @@ export default class TTTController {
         }
         if (this.isCoordinateAvailable(coordinate)) {
             this._setCoordinates(coordinate);
+            this._incrementNumMoves();
             if (this._checkIfPlayerWon()) {
                 return true;
             } else {
                 this._switchCurrentPlayer();
-                this._incrementNumMoves();
             }
         }
 
@@ -142,7 +144,7 @@ export default class TTTController {
      * @returns Boolean
      */
     _checkIfPlayerWon() {
-        this._hasWon = this._checkRows() || this._checkColumns() || this._checkDiagonals();
+        this._hasWon = this._numMoves >= MIN_NUM_MOVES && (this._checkRows() || this._checkColumns() || this._checkDiagonals());
         return this._hasWon;
     }
 
@@ -160,7 +162,7 @@ export default class TTTController {
                     count++;    
                 }
             }
-            if (count === 3) {
+            if (count === NUM_TO_WIN) {
                 playerWon = true;
                 break;
             }
@@ -183,7 +185,7 @@ export default class TTTController {
                     count++;    
                 }
             }
-            if (count === 3) {
+            if (count === NUM_TO_WIN) {
                 playerWon = true;
                 break;
             }
@@ -210,7 +212,7 @@ export default class TTTController {
             this._wonCoord = GameConstants.RIGHT_DIAGONAL;
             count += 2;
         }
-        if (count === 3) {
+        if (count === NUM_TO_WIN) {
             playerWon = true;
         }
 
