@@ -1,17 +1,20 @@
 <template>
   <div id="app">
-    <tictacheader header-text='Tic Tac Toe'></tictacheader>
+    <tictacheader header-text="Tic Tac Toe"></tictacheader>
     <router-view/>
+    <tictacfooter footer-text="A Vue.js Project by Chad D. Owens"></tictacfooter>
   </div>
 </template>
 
 <script>
 import tictacheader from './components/layout/TicTacHeader'
+import tictacfooter from './components/layout/TicTacFooter'
 
 export default {
   name: 'App',
   components: {
-    tictacheader
+    tictacheader,
+    tictacfooter
   }
 }
 </script>

@@ -16,7 +16,7 @@ export default {
     },
     data() {
         return {
-            headerText: this.headerText
+
         }
     },
     methods: {

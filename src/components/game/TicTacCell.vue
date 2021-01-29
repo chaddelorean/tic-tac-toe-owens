@@ -31,7 +31,13 @@ export default {
                 } else if (this.value === GameConstants.PLAYERO) {
                     this.o = true;
                     this.x = false;
+                } else {
+                    this.o = false;
+                    this.x = false;
                 }
+            } else {
+                this.o = false;
+                this.x = false;
             }
         }
     },
@@ -54,7 +60,6 @@ export default {
         justify-content: center;
         align-content: center;
         height: 100%;
-        width: 100%;
         content: ' ';
         color: white;
     }
@@ -66,7 +71,6 @@ export default {
         display: flex;
         align-items: center;
         font-size: 150px;
-        margin-right: 25px;
         opacity: 0;
         visibility: hidden;
     }
@@ -74,6 +78,34 @@ export default {
     .cellContainer .show {
         opacity: 1;
         visibility: visible;
+        -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+        -moz-animation: fadein 1s; /* Firefox < 16 */
+        -ms-animation: fadein 1s; /* Internet Explorer */
+        -o-animation: fadein 1s; /* Opera < 12.1 */
+        animation: fadein 1s;
+    }
+
+    @keyframes fadein {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+
+    /* Firefox < 16 */
+    @-moz-keyframes fadein {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+
+    /* Safari, Chrome and Opera > 12.1 */
+    @-webkit-keyframes fadein {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+
+    /* Internet Explorer */
+    @-ms-keyframes fadein {
+        from { opacity: 0; }
+        to   { opacity: 1; }
     }
 
     @media only screen and (max-width: 768px) {
