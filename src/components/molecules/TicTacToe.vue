@@ -24,17 +24,18 @@
             <div v-bind:class="{animateshow: gameStatus}" class="game-status">{{gameStatus}}</div>
             <div class="game-buttons">
                 <tttbutton text="New Game" @click.native="newGame"></tttbutton>
-                <tttbutton text="Main Menu" @click.native="newGame"></tttbutton>
+                <tttrouterlink text="Main Menu" to="/"></tttrouterlink>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import TicTacCell from './TicTacCell.vue'
+import TicTacCell from '../atoms/TicTacCell.vue'
 import TTTController from '../../controllers/TTTController'
 import GameConstants from '../../models/GameConstants'
 import tttbutton from '../atoms/TTTButton';
+import tttrouterlink from '../atoms/TTTRouterLink'
 
 const PLAYER_KEY = "{player}"
 const PLAYER_TURN = `Player ${PLAYER_KEY}'s Turn`;
@@ -43,7 +44,8 @@ const TIE_GAME = "Tie Game"
 export default {
     components: { 
         TicTacCell,
-        tttbutton
+        tttbutton,
+        tttrouterlink
     },
     name: 'TicTacToe',
     data () {
@@ -321,9 +323,7 @@ export default {
         .cellContainer div {
             font-size: 75px;
         }
-    }
 
-    @media only screen and (max-width: 768px) {
         .grid-container {
             width: 100%;
             height: 400px;

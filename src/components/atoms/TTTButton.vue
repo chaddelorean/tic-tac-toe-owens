@@ -30,6 +30,7 @@ export default {
         height: 50px;
         background-color: transparent;
         border: solid 5px white;
+        font-weight: bold;
         padding: 8px;
         font-size: 20px;
         display: flex;
