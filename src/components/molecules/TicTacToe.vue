@@ -21,7 +21,10 @@
         </div>
 
         <div class="game-controls">
-            <div v-bind:class="{animateshow: gameStatus}" class="game-status">{{gameStatus}}</div>
+            <div class="status-container">
+                <img v-show="multiplayer !== tttController.getCurrentPlayer() && !tttController.hasPlayerWon() && tttController.getNumberOfMoves() < 9" class="spinner" src="../../assets/spinner.png"/>
+                <div v-bind:class="{animateshow: gameStatus}" class="game-status">{{gameStatus}}</div>
+            </div>
             <div class="game-buttons">
                 <tttbutton text="New Game" @click.native="newGame"></tttbutton>
                 <tttrouterlink text="Main Menu" to="/"></tttrouterlink>
@@ -36,11 +39,13 @@ import TTTController from '../../controllers/TTTController'
 import GameConstants from '../../models/GameConstants'
 import tttbutton from '../atoms/TTTButton';
 import tttrouterlink from '../atoms/TTTRouterLink'
+import MultiPlayer from '../../controllers/MultiPlayer'
 
 const PLAYER_KEY = "{player}"
 const PLAYER_TURN = `Player ${PLAYER_KEY}'s Turn`;
 const PLAYER_WINS = `Player ${PLAYER_KEY} Wins`;
 const TIE_GAME = "Tie Game"
+const MAX_MOVES = 9;
 export default {
     components: { 
         TicTacCell,
@@ -48,6 +53,16 @@ export default {
         tttrouterlink
     },
     name: 'TicTacToe',
+    props: {
+        multiplayer: {
+            type: String,
+            value: GameConstants.PLAYERX
+        },
+        sessionid: {
+            type: Number,
+            value: -1
+        }
+    },
     data () {
         return {
             tttController: new TTTController(),
@@ -73,53 +88,17 @@ export default {
     },
     methods: {
         markMove: function(e) {
-            if (!this.tttController.hasPlayerWon()) {
-                const elementCoordinates = JSON.parse(e.currentTarget.getAttribute('coordinates'));
-                let coordinates = {x: elementCoordinates[0], y: elementCoordinates[1]};
-                if (this.tttController.isCoordinateAvailable(coordinates)) {
-                    this.updateSlots(e.currentTarget.getAttribute('coordinates'));
-                    const currentPlayer = this.tttController.getCurrentPlayer();
-                    const turnResult = this.tttController.takeTurn(coordinates);
-                    if (turnResult) {
-                        this.calculateWin();
-                        this.gameStatus = PLAYER_WINS.replace(PLAYER_KEY, currentPlayer);
-                    } else if (this.tttController.getNumberOfMoves() >= 9) {
-                        this.gameStatus = TIE_GAME;
-                    } else {
-                        this.gameStatus = PLAYER_TURN.replace(PLAYER_KEY, this.tttController.getCurrentPlayer());
-                    }
+            const elementCoordinates = JSON.parse(e.currentTarget.getAttribute('coordinates'));
+            const coordinates = {x: elementCoordinates[0], y: elementCoordinates[1]};
+            if (this.tttController.isCoordinateAvailable(coordinates) && !this.tttController.hasPlayerWon()) { 
+                if (this.multiplayer && this.multiplayer === this.tttController.getCurrentPlayer()) {
+                    this.tttController.takeTurn(coordinates);
+                    this.syncBoard();
+                    MultiPlayer.pushGameState(this.sessionid, this.tttController.toJSON());
+                } else if (!this.multiplayer) {
+                    this.tttController.takeTurn(coordinates);
+                    this.syncBoard();
                 }
-            }
-        },
-        updateSlots: function(coordinates) {
-            switch (coordinates) {
-                case "[0,0]":
-                    this.slot1 = this.tttController.getCurrentPlayer();
-                    break;
-                case "[0,1]":
-                    this.slot2 = this.tttController.getCurrentPlayer();
-                    break;
-                case "[0,2]":
-                    this.slot3 = this.tttController.getCurrentPlayer();
-                    break;
-                case "[1,0]":
-                    this.slot4 = this.tttController.getCurrentPlayer();
-                    break;
-                case "[1,1]":
-                    this.slot5 = this.tttController.getCurrentPlayer();
-                    break;
-                case "[1,2]":
-                    this.slot6 = this.tttController.getCurrentPlayer();
-                    break;
-                case "[2,0]":
-                    this.slot7 = this.tttController.getCurrentPlayer();
-                    break;
-                case "[2,1]":
-                    this.slot8 = this.tttController.getCurrentPlayer();
-                    break;
-                case "[2,2]":
-                    this.slot9 = this.tttController.getCurrentPlayer();
-                    break;
             }
         },
         calculateWin: function() {
@@ -150,31 +129,77 @@ export default {
                     break;
             }
         },
+        calculateGameStatus: function() {
+            if (this.tttController.hasPlayerWon()) {
+                this.gameStatus = PLAYER_WINS.replace(PLAYER_KEY, this.tttController.getCurrentPlayer());
+            } else if (this.tttController.getNumberOfMoves() >= MAX_MOVES) {
+                this.gameStatus = TIE_GAME;
+            } else {
+                this.gameStatus = PLAYER_TURN.replace(PLAYER_KEY, this.tttController.getCurrentPlayer());
+            }
+        },
         newGame: function() {
             this.tttController = new TTTController();
-            this.slot1 = "";
-            this.slot2 = "";
-            this.slot3 = "";
-            this.slot4 = "";
-            this.slot5 = "";
-            this.slot6 = "";
-            this.slot7 = "";
-            this.slot8 = "";
-            this.slot9 = "";
-            this.row0 = false;
-            this.row1 = false;
-            this.row2 = false;
-            this.col0 = false;
-            this.col1 = false;
-            this.col2 = false;
-            this.leftDiagonal = false;
-            this.rightDiagonal = false;
-            this.gameStatus = PLAYER_TURN.replace(PLAYER_KEY, this.tttController.getCurrentPlayer());;
+            this.tttController.setGuestAsJoined();
+            if (this.multiplayer) {
+                MultiPlayer.pushGameState(this.sessionid, this.tttController.toJSON());
+            }
+            this.syncBoard();
+
+        },
+        syncBoard: function() {
+            const grid = this.tttController.getCurrentGrid();
+            const slots = ["slot1", "slot2", "slot3", "slot4", "slot5", "slot6", "slot7", "slot8", "slot9"];
+            let counter = 0;
+            if (grid && grid.length > 0) {
+                for (let i = 0; i < grid.length; i++) {
+                    for (let j = 0; j < grid.length; j++) {
+                        this[slots[counter]] = this.getPlayerFromCell(grid[i][j]);
+                        counter++;
+                    }
+                }
+            }
+
+            if (this.tttController.hasPlayerWon()) {
+                this.calculateWin();
+            } else {
+                this.row0 = false;
+                this.row1 = false;
+                this.row2 = false;
+                this.col0 = false;
+                this.col1 = false;
+                this.col2 = false;
+                this.leftDiagonal = false;
+                this.rightDiagonal = false;
+            }
+            
+            this.calculateGameStatus();
+
+        },
+        getPlayerFromCell(cell) {
+            return cell !== GameConstants.FREE_CELL ? cell : "";
+        },
+        onMultiPlayerUpdate(gameStatus) {
+            if (gameStatus.val()) {
+                this.tttController.updateFromJson(gameStatus.val());
+                this.syncBoard();
+            }
+        }
+    },
+    watch: {
+        sessionid: function() {
+            if (this.sessionid !== -1 && this.multiplayer === GameConstants.PLAYERX) {
+                MultiPlayer.registerGameUpdate(this.sessionid, this.onMultiPlayerUpdate);
+            }
         }
     },
     created: function() {
         this.tttController = new TTTController();
-        this.gameStatus = PLAYER_TURN.replace(PLAYER_KEY, this.tttController.getCurrentPlayer());;
+        if (this.multiplayer === GameConstants.PLAYERO) {
+            this.tttController.setGuestAsJoined();
+            MultiPlayer.registerGameUpdate(this.sessionid, this.onMultiPlayerUpdate);
+            MultiPlayer.pushGameState(this.sessionid, this.tttController.toJSON());
+        }
     }
 }
 </script>
@@ -273,16 +298,29 @@ export default {
         flex-direction: column;
     }
 
+    .game-controls .status-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .game-controls .spinner {
+        height: 40px;
+        margin-right: 20px;
+        animation: spinner 1s linear infinite;
+    }
+
     .game-controls .game-buttons {
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
-        width: 20%;
+        width: 100%;
+        margin-top: 20px;
     }
 
     .game-controls .game-status {
         font-size: 50px;
-        margin-bottom: 20px;
         min-height: 69px;
     }
 
@@ -294,6 +332,10 @@ export default {
         -ms-animation: fadein 1s; /* Internet Explorer */
         -o-animation: fadein 1s; /* Opera < 12.1 */
         animation: fadein 1s;
+    }
+
+    @keyframes spinner {
+        to {transform: rotate(360deg);}
     }
 
     @keyframes fadein {

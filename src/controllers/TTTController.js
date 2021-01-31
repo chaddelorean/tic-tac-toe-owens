@@ -2,7 +2,6 @@ import GameConstants from '../models/GameConstants';
 
 const COL_SIZE = 3;
 const ROW_SIZE = 3;
-const FREE_CELL = "U";
 const MIN_NUM_MOVES = 5;
 const NUM_TO_WIN = 3;
 
@@ -12,35 +11,30 @@ export default class TTTController {
     _numMoves
     _wonCoord
     _hasWon
+    _hasGuestJoined
 
     constructor() {
         this._initGrid();
         this._currentPlayer = GameConstants.PLAYERX;
         this._numMoves = 0;
+        this._wonCoord = "";
+        this._hasWon = false;
+        this._hasGuestJoined = false;
     }
 
     /**
      * Public API to set a move of the current player
-     * If current Player won returns true
-     * Otherwise will return false and switches state to next player
      * @param {x: number y: number} coordinate  
-     * @returns Boolean
      */
     takeTurn(coordinate) {
-        if (this.hasPlayerWon()) {
-            return true;
-        }
-        if (this.isCoordinateAvailable(coordinate)) {
+        if (!this.hasPlayerWon() && this.isCoordinateAvailable(coordinate)) {
             this._setCoordinates(coordinate);
             this._incrementNumMoves();
-            if (this._checkIfPlayerWon()) {
-                return true;
-            } else {
+            this._checkIfPlayerWon()
+            if (!this.hasPlayerWon()) {
                 this._switchCurrentPlayer();
             }
         }
-
-        return false;
     } 
 
     /**
@@ -72,7 +66,7 @@ export default class TTTController {
      * @param {x: number y: number} coordinate 
      */
     isCoordinateAvailable(coordinate) {
-        return this._grid[coordinate.x] && this._grid[coordinate.x][coordinate.y] !== FREE_CELL ? false : true;
+        return this._grid[coordinate.x] && this._grid[coordinate.x][coordinate.y] !== GameConstants.FREE_CELL ? false : true;
     }
 
     /**
@@ -92,6 +86,41 @@ export default class TTTController {
     }
 
     /**
+     * Sets if guest has joined in multiplayer
+     */
+    setGuestAsJoined() {
+        this._hasGuestJoined = true;
+    }
+
+    /**
+     * Eports current state of game in JSON format
+     * @returns object
+     */
+    toJSON() {
+        return {
+            grid: this._grid,
+            currentPlayer: this._currentPlayer,
+            numMoves : this._numMoves,
+            wonCoord: this._wonCoord,
+            hasWon: this._hasWon,
+            hasGuestJoined: this._hasGuestJoined
+        }
+    }
+
+    /**
+     * Updates current game state from JSON object
+     * @param {grid: Array, currentPlayer: string, numMoves: number, wonCoord: string, hasWon: Boolean} update 
+     */
+    updateFromJson(update) {
+        this._grid = update.grid;
+        this._currentPlayer = update.currentPlayer;
+        this._numMoves = update.numMoves;
+        this._wonCoord = update.wonCoord;
+        this._hasWon = update.hasWon;
+        this._hasGuestJoined = update.hasGuestJoined;
+    }
+
+    /**
      * Used to init grid with default values
      */
     _initGrid() {
@@ -99,7 +128,7 @@ export default class TTTController {
         for (let i = 0; i < COL_SIZE; i++) {
             this._grid[i] = [];
             for (let j = 0; j < ROW_SIZE; j++) {
-                this._grid[i][j] = FREE_CELL;
+                this._grid[i][j] = GameConstants.FREE_CELL;
             }
         }
     }
