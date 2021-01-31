@@ -405,5 +405,15 @@ export default {
         .game-controls .game-buttons {
             width: 100%;
         }
+
+        .game-controls .status-container {
+            flex-direction: column;
+        }
+
+        .game-controls .spinner {
+            margin-right: 0;
+            margin-left: 12px;
+            margin-bottom: 10px;
+        }
     }
 </style>

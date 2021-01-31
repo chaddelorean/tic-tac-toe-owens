@@ -102,9 +102,37 @@ export default {
         justify-content: space-evenly;
     }
 
-    .setup-remote-game .guest-url{
+    .setup-remote-game .guest-url {
         border: 5px solid white;
         padding: 8px;
         margin-right: 10px;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .setup-remote-game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .setup-remote-game img {
+            height: 200px;
+        }
+
+        .setup-remote-game p { 
+            width: 80%;
+        }
+
+        .setup-remote-game .guest-url-container {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .setup-remote-game .guest-url {
+            word-wrap: break-word;
+            width: 65%;
+            margin-bottom: 20px;
+        }
     }
 </style>
