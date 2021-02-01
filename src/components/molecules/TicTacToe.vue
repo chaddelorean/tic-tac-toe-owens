@@ -22,7 +22,7 @@
 
         <div class="game-controls">
             <div class="status-container">
-                <img v-show="multiplayer !== tttController.getCurrentPlayer() && !tttController.hasPlayerWon() && tttController.getNumberOfMoves() < 9" class="spinner" src="../../assets/spinner.png"/>
+                <img v-show="multiplayer && multiplayer !== tttController.getCurrentPlayer() && !tttController.hasPlayerWon() && tttController.getNumberOfMoves() < 9" class="spinner" src="../../assets/spinner.png"/>
                 <div v-bind:class="{animateshow: gameStatus}" class="game-status">{{gameStatus}}</div>
             </div>
             <div class="game-buttons">
@@ -98,6 +98,7 @@ export default {
                 } else if (!this.multiplayer) {
                     this.tttController.takeTurn(coordinates);
                     this.syncBoard();
+                    localStorage.setItem(GameConstants.LOCAL_STORAGE_KEY, JSON.stringify(this.tttController.toJSON()));
                 }
             }
         },
@@ -162,6 +163,7 @@ export default {
 
             if (this.tttController.hasPlayerWon()) {
                 this.calculateWin();
+                localStorage.removeItem(GameConstants.LOCAL_STORAGE_KEY);
             } else {
                 this.row0 = false;
                 this.row1 = false;
@@ -200,13 +202,19 @@ export default {
             MultiPlayer.registerGameUpdate(this.sessionid, this.onMultiPlayerUpdate);
             MultiPlayer.pushGameState(this.sessionid, this.tttController.toJSON());
         }
+        if (!this.multiplayer) {
+            const state = localStorage.getItem(GameConstants.LOCAL_STORAGE_KEY);
+            if (state) {
+                this.tttController.updateFromJson(JSON.parse(state));
+            }
+        }
+        this.syncBoard();
     }
 }
 </script>
 
 <style scoped>
     .game-container {
-        width: 100%;
         margin: 0 auto;
         display: flex;
         align-items: center;
@@ -362,6 +370,10 @@ export default {
     }
 
     @media only screen and (max-width: 768px) {
+        .game-container {
+            width: 100%;
+        }
+
         .cellContainer div {
             font-size: 75px;
         }

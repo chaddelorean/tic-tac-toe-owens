@@ -13,6 +13,7 @@
 
 <script>
 import tttrouterlink from '../atoms/TTTRouterLink'
+import GameConstants from '../../models/GameConstants'
 export default {
     name: "MainMenu",
     components: {
@@ -28,6 +29,9 @@ export default {
     },
     methods: {
 
+    },
+    created: function() {
+        localStorage.removeItem(GameConstants.LOCAL_STORAGE_KEY);
     }
 }
 </script>

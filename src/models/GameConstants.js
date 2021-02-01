@@ -5,5 +5,6 @@ export default {
     ROW: "row:",
     COL: "col:",
     LEFT_DIAGONAL: "leftdiag",
-    RIGHT_DIAGONAL: "rightdiag"
+    RIGHT_DIAGONAL: "rightdiag",
+    LOCAL_STORAGE_KEY: "tictactoestate"
 }
