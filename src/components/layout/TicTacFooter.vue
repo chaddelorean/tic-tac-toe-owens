@@ -39,6 +39,7 @@ export default {
 
      @media only screen and (max-width: 768px) {
          #footer-container {
+             margin-top: 20px;
              border-top: solid 5px white;
          }
 

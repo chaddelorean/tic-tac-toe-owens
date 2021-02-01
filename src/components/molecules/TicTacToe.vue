@@ -418,6 +418,10 @@ export default {
             width: 100%;
         }
 
+        .game-controls .game-status {
+            font-size: 35px;
+        }
+
         .game-controls .status-container {
             flex-direction: column;
         }
