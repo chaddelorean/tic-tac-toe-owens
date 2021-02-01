@@ -177,6 +177,10 @@ export default {
     }
 
     @media only screen and (max-width: 768px) {
+        .remote-game-container {
+            width: 100%;
+        }
+        
         .setup-remote-game {
             display: flex;
             flex-direction: column;
