@@ -379,8 +379,8 @@ export default {
         }
 
         .grid-container {
-            width: 100%;
-            height: 400px;
+            width: 80%;
+            height: 300px;
         }
         
         .grid-container .row-border {
@@ -399,15 +399,15 @@ export default {
         }
 
         .grid-container .left-diagonal {
-            left: -69PX;
-            width: 127%;
-            -webkit-transform: translateY(0px) translateX(0px) rotate(47deg);
+            left: -83PX;
+            width: 140%;
+            -webkit-transform: translateY(0px) translateX(0px) rotate(42deg);
         }
 
         .grid-container .right-diagonal {
-            right: -68PX;
-            width: 127%;
-            -webkit-transform: translateY(0px) translateX(0px) rotate(132deg);
+            right: -84PX;
+            width: 140%;
+            -webkit-transform: translateY(0px) translateX(0px) rotate(136deg);
         }
 
         .game-controls {
