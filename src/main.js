@@ -3,8 +3,11 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Toast, { POSITION } from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 Vue.config.productionTip = false
+Vue.use(Toast, {position: POSITION.TOP_CENTER});
 
 /* eslint-disable no-new */
 new Vue({
