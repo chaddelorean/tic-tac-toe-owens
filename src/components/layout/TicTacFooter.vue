@@ -36,4 +36,15 @@ export default {
         margin: 50px;
         font-size: 30px;
     }
+
+     @media only screen and (max-width: 768px) {
+         #footer-container {
+             border-top: solid 5px white;
+         }
+
+         #footer-container .footer-content {
+             margin: 10px;
+             font-size: 20px;
+         }
+     }
 </style>

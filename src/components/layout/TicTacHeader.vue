@@ -51,11 +51,16 @@ export default {
 
     @media only screen and (max-width: 768px) {
         #header-container {
+            height: 50px;
             margin-bottom: 50px;
         }
         
         #header-container span {
-            font-size: 50px;
+            font-size: 30px;
+        }
+
+        #bottom-bar {
+            height: 5px;
         }
     }
 </style>
