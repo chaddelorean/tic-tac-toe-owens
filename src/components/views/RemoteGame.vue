@@ -1,9 +1,9 @@
 <template>
     <div class="remote-game-container">
         <div v-show="!hasGuestJoined" class="setup-remote-game">
-            <img src="../../assets/remotegame.png"/>
+            <img class="remote-image" src="../../assets/remotegame.png"/>
             <div class="waiting-for-guest-text">
-                <img src="../../assets/spinner.png" />
+                <img class="spinner" src="../../assets/spinner.png" />
                 <span>Waiting for guest to join . . .</span>
             </div>
             <p>Send the link below to your guest to start the game</p>
@@ -97,7 +97,16 @@ export default {
 </script>
 
 <style scoped>
+    .remote-game-container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        padding-top: 50px;
+        padding-bottom: 50px;
+        background-color: #57cc99;
+    }
     .setup-remote-game {
+        width: 50%;
         font-size: 25px;
         font-weight: bold;
     }
@@ -109,8 +118,10 @@ export default {
 
     .setup-remote-game .guest-url {
         border: 5px solid white;
-        padding: 8px;
+        padding-top: 8px;
+        padding-bottom: 8px;
         margin-right: 10px;
+        width: 2000px;
     }
 
     .setup-remote-game .waiting-for-guest-text {
@@ -122,13 +133,20 @@ export default {
         font-size: 50px;
     }
 
-   .setup-remote-game .waiting-for-guest-text img {
-        height: 50px;
+    .setup-remote-game .remote-image {
+        height: auto;
+        width: 150px;
+    }
+
+   .setup-remote-game .waiting-for-guest-text .spinner {
+        height: auto;
+        width: 50px;
         margin-right: 15px;
         animation: spinner 1s linear infinite;
    }
 
    .remote-game-container .game-container-with-guest {
+        width: 100%;
         opacity: 0;
         visibility: hidden;
         display: none;
@@ -179,6 +197,8 @@ export default {
     @media only screen and (max-width: 768px) {
         .remote-game-container {
             width: 100%;
+            padding-top: 0;
+            padding-bottom: 0;
         }
         
         .setup-remote-game {
@@ -186,9 +206,13 @@ export default {
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            width: 95%;
+            padding-top: 20px;
+            padding-bottom: 10px;
         }
-        .setup-remote-game img {
-            height: 200px;
+
+        .setup-remote-game .remote-image {
+            width: 100px;
         }
 
         .setup-remote-game p { 
@@ -199,12 +223,18 @@ export default {
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            width: 95%;
         }
 
         .setup-remote-game .guest-url {
             word-wrap: break-word;
-            width: 65%;
+            width: 100%;
             margin-bottom: 20px;
+            margin-right: 0;
+        }
+
+        .setup-remote-game .waiting-for-guest-text .spinner {
+            margin-right: 0;
         }
 
         .setup-remote-game .waiting-for-guest-text {

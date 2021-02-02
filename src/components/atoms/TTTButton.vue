@@ -26,16 +26,23 @@ export default {
 
 <style scoped>
     .button-container {
-        width: 100px;
-        height: 50px;
+        width: 100%;
+        min-height: 50px;
         background-color: transparent;
         border: solid 5px white;
         font-weight: bold;
-        padding: 8px;
-        font-size: 20px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        font-size: 40px;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
+    }
+
+    @media only screen and (max-width: 768px) { 
+        .button-container {
+            margin-bottom: 10px;
+        }
     }
 </style>

@@ -58,10 +58,8 @@ export default {
         position: relative;
         display: flex;
         justify-content: center;
-        align-content: center;
+        align-items: center;
         height: 100%;
-        content: ' ';
-        color: white;
     }
 
     .cellContainer div {
@@ -70,7 +68,8 @@ export default {
         bottom: 0;
         display: flex;
         align-items: center;
-        font-size: 150px;
+        font-size: 120px;
+        margin-top: 20px;
         opacity: 0;
         visibility: hidden;
     }

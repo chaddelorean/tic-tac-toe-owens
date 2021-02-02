@@ -1,7 +1,6 @@
 <template>
     <div id='header-container'>
         <span>{{headerText}}</span>
-        <div id='bottom-bar'></div>
     </div>
 </template>
 
@@ -33,8 +32,8 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #80ed99;
-        margin-bottom: 100px;
+        background-color: #38a3a5;
+        border-bottom: 15px solid white;
     }
 
     #header-container span {
@@ -52,15 +51,11 @@ export default {
     @media only screen and (max-width: 768px) {
         #header-container {
             height: 50px;
-            margin-bottom: 50px;
+            border-bottom: 5px solid white;
         }
         
         #header-container span {
             font-size: 30px;
-        }
-
-        #bottom-bar {
-            height: 5px;
         }
     }
 </style>

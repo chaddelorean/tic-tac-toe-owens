@@ -38,11 +38,14 @@ export default {
 
 <style scoped>
     .main-menu-container {
-        width: 60%;
+        width: 100%;
         display: flex;
         justify-content: space-evenly;
         align-items: center;
-        min-height: 800px;
+        min-height: 250px;
+        padding-top: 50px;
+        padding-bottom: 50px;
+        background-color: #57cc99;
     }
     .main-menu-container .router-container {
         display: flex;
@@ -50,8 +53,14 @@ export default {
         height: 75px;
         justify-content: space-evenly;
     }
+    .router-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     .router-container img {
-        height: 150px;
+        height: auto;
+        width: 150px;
         margin-bottom: 30px;
     }
 
@@ -59,7 +68,18 @@ export default {
         .main-menu-container {
             flex-direction: column;
             justify-content: space-around;
-            min-height: 550px;
+            min-height: 450px;
+            width: 100%;
+        }
+        .router-container {
+            width: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .router-container img {
+            height: auto;
+            width: 100px;
         }
     }
 </style>

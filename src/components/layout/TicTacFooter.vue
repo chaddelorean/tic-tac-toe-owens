@@ -28,9 +28,8 @@ export default {
     #footer-container {
         width: 100%;
         height: 200px;
-        margin-top: 50px;
         border-top: solid 20px white;
-        background-color: #57cc99;
+        background-color: #22577a;
     }
     #footer-container .footer-content {
         margin: 50px;
@@ -39,7 +38,6 @@ export default {
 
      @media only screen and (max-width: 768px) {
          #footer-container {
-             margin-top: 20px;
              border-top: solid 5px white;
          }
 

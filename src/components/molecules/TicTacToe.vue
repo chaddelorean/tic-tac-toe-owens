@@ -198,9 +198,14 @@ export default {
     created: function() {
         this.tttController = new TTTController();
         if (this.multiplayer === GameConstants.PLAYERO) {
-            this.tttController.setGuestAsJoined();
-            MultiPlayer.registerGameUpdate(this.sessionid, this.onMultiPlayerUpdate);
-            MultiPlayer.pushGameState(this.sessionid, this.tttController.toJSON());
+            MultiPlayer.getCurrentGameState(this.sessionid).then((state) => {
+                if (state) {
+                    this.tttController.updateFromJson(state);
+                }
+                this.tttController.setGuestAsJoined();
+                MultiPlayer.registerGameUpdate(this.sessionid, this.onMultiPlayerUpdate);
+                MultiPlayer.pushGameState(this.sessionid, this.tttController.toJSON());
+            });
         }
         if (!this.multiplayer) {
             const state = localStorage.getItem(GameConstants.LOCAL_STORAGE_KEY);
@@ -215,18 +220,21 @@ export default {
 
 <style scoped>
     .game-container {
-        margin: 0 auto;
         display: flex;
         align-items: center;
         flex-direction: column;
+        width: 100%;
+        padding-top: 50px;
+        padding-bottom: 50px;
+        background-color: #57cc99;
     }
 
     .grid-container {
         position: relative;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        height: 600px;
-        width: 600px;
+        height: 500px;
+        width: 500px;
     }
 
     .grid-container .row-border {
@@ -260,7 +268,7 @@ export default {
     }
 
     .grid-container .row-0 {
-        top: 16%;        
+        top: 18%;        
     }
 
     .grid-container .col-0 {
@@ -268,7 +276,7 @@ export default {
     }
 
     .grid-container .row-1 {
-        top: 50%;        
+        top: 52%;        
     }
 
     .grid-container .col-1 {
@@ -276,7 +284,7 @@ export default {
     }
 
     .grid-container .row-2 {
-        top: 83%;        
+        top: 84%;        
     }
 
     .grid-container .col-2 {
@@ -284,16 +292,16 @@ export default {
     }
 
     .grid-container .left-diagonal {
-        top: 45%;
-        left: -121PX;
-        width: 129%;
-        -webkit-transform: translateY(0px) translateX(0px) rotate(45deg);
+        top: 49%;
+        left: -110PX;
+        width: 141%;
+        -webkit-transform: translateY(0px) translateX(0px) rotate(46deg);
     }
 
     .grid-container .right-diagonal {
-        top: 48%;
-        right: -121PX;
-        width: 129%;
+        top: 52%;
+        right: -107PX;
+        width: 137%;
         -webkit-transform: translateY(0px) translateX(0px) rotate(134deg);
     }
 
@@ -323,12 +331,21 @@ export default {
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
-        width: 100%;
+        width: 50%;
         margin-top: 20px;
+    }
+
+    .game-controls .game-buttons .button-container {
+        margin-right: 10px;
+    }
+
+    .game-controls .game-buttons .ttt-router-link {
+        margin-left: 10px;
     }
 
     .game-controls .game-status {
         font-size: 50px;
+        font-weight: bold;
         min-height: 69px;
     }
 
@@ -372,6 +389,8 @@ export default {
     @media only screen and (max-width: 768px) {
         .game-container {
             width: 100%;
+            padding-top: 20px;
+            padding-bottom: 20px;
         }
 
         .cellContainer div {
@@ -399,31 +418,43 @@ export default {
         }
 
         .grid-container .left-diagonal {
-            left: -83PX;
-            width: 140%;
-            -webkit-transform: translateY(0px) translateX(0px) rotate(42deg);
+            left: -71PX;
+            -webkit-transform: translateY(0px) translateX(0px) rotate(44deg);
         }
 
         .grid-container .right-diagonal {
-            right: -84PX;
-            width: 140%;
+            right: -67PX;
             -webkit-transform: translateY(0px) translateX(0px) rotate(136deg);
         }
 
         .game-controls {
-            margin-top: 40px;
+            margin-top: 10px;
         }
 
         .game-controls .game-buttons {
-            width: 100%;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 90%;
+            margin-top: 0;
+        }
+
+        .game-controls .game-buttons .button-container {
+            margin-right: 0;
+        }
+
+        .game-controls .game-buttons .ttt-router-link {
+            margin-left: 0;
         }
 
         .game-controls .game-status {
-            font-size: 35px;
+            font-size: 40px;
         }
 
         .game-controls .status-container {
             flex-direction: column;
+            justify-content: flex-end;
+            min-height: 120px;
         }
 
         .game-controls .spinner {

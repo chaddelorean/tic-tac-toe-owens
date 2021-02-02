@@ -25,19 +25,20 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 125px;
-        margin-left: 10px;
+        width: 100%;
+        min-height: 50px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        border: 5px solid white;
     }
 
     .ttt-router-link a {
         text-decoration: none;
         border-color: transparent;
-        font-size: 20px;
-        color: white;
+        font-size: 40px;
         font-weight: bold;
-        padding: 8px;
-        border: 5px solid white;
-        height: 50px;
+        color: white;
         display: block;
+        width: 100%
     }
 </style>
