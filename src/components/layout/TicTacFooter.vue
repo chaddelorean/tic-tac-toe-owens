@@ -27,7 +27,6 @@ export default {
 <style scoped>
     #footer-container {
         width: 100%;
-        height: 200px;
         border-top: solid 20px white;
         background-color: #22577a;
     }
