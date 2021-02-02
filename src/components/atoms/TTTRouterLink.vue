@@ -27,15 +27,15 @@ export default {
         align-items: center;
         width: 100%;
         min-height: 50px;
-        padding-top: 8px;
-        padding-bottom: 8px;
+        padding-top: 3px;
+        padding-bottom: 3px;
         border: 5px solid white;
     }
 
     .ttt-router-link a {
         text-decoration: none;
         border-color: transparent;
-        font-size: 40px;
+        font-size: 35px;
         font-weight: bold;
         color: white;
         display: block;

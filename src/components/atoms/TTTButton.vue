@@ -31,8 +31,8 @@ export default {
         background-color: transparent;
         border: solid 5px white;
         font-weight: bold;
-        padding-top: 8px;
-        padding-bottom: 8px;
+        padding-top: 3px;
+        padding-bottom: 3px;
         font-size: 40px;
         display: flex;
         align-items: center;
@@ -43,6 +43,7 @@ export default {
     @media only screen and (max-width: 768px) { 
         .button-container {
             margin-bottom: 10px;
+            font-size: 35px;
         }
     }
 </style>

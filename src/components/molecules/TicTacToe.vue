@@ -224,8 +224,8 @@ export default {
         align-items: center;
         flex-direction: column;
         width: 100%;
-        padding-top: 50px;
-        padding-bottom: 50px;
+        padding-top: 20px;
+        padding-bottom: 10px;
         background-color: #57cc99;
     }
 
@@ -307,7 +307,7 @@ export default {
 
     .game-controls {
         width: 100%;
-        margin-top: 60px;
+        margin-top: 20px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -332,7 +332,7 @@ export default {
         flex-direction: row;
         justify-content: space-evenly;
         width: 50%;
-        margin-top: 20px;
+        margin-top: 10px;
     }
 
     .game-controls .game-buttons .button-container {
@@ -346,7 +346,6 @@ export default {
     .game-controls .game-status {
         font-size: 50px;
         font-weight: bold;
-        min-height: 69px;
     }
 
     .animateshow {
@@ -448,19 +447,23 @@ export default {
         }
 
         .game-controls .game-status {
-            font-size: 40px;
+            font-size: 35px;
+            min-height: 0;
         }
 
         .game-controls .status-container {
             flex-direction: column;
             justify-content: flex-end;
-            min-height: 120px;
         }
 
         .game-controls .spinner {
-            margin-right: 0;
-            margin-left: 12px;
-            margin-bottom: 10px;
+            position: fixed;
+            top: 30%;
+            left: 50%;
+            margin-left: -50px;
+            width: 100px;
+            height: auto;
+
         }
     }
 </style>
