@@ -448,7 +448,7 @@ export default {
 
         .game-controls .game-status {
             font-size: 35px;
-            min-height: 0;
+            margin-bottom: 5px;
         }
 
         .game-controls .status-container {
