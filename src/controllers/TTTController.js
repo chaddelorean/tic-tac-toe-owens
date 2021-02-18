@@ -236,8 +236,7 @@ export default class TTTController {
         if (this._grid[0][0] === this.getCurrentPlayer() && this._grid[2][2] === this.getCurrentPlayer()) {
             this._wonCoord = GameConstants.LEFT_DIAGONAL;
             count += 2;
-        }
-        if (this._grid[0][2] === this.getCurrentPlayer() && this._grid[2][0] === this.getCurrentPlayer()) {
+        } else if (this._grid[0][2] === this.getCurrentPlayer() && this._grid[2][0] === this.getCurrentPlayer()) {
             this._wonCoord = GameConstants.RIGHT_DIAGONAL;
             count += 2;
         }
